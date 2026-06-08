@@ -122,7 +122,9 @@ for tool_call in assistant_message.tool_calls:
 *The loop should stop when: (a) the LLM returns a response with no tool calls, OR (b) the MAX_TOOL_ROUNDS limit is reached. Describe how you will detect each condition and what you will return in each case.*
 
 ```
-[your answer here]
+(a) No tool calls: after each LLM call, check if assistant_message.tool_calls is falsy. If so, the LLM has a final answer exit the loop and return the response content.
+
+(b) MAX_TOOL_ROUNDS reached: use a counter that increments each iteration. If it hits MAX_TOOL_ROUNDS before the LLM stops calling tools, exit the loop and return a fallback message like "I wasn't able to complete your request please try again."
 ```
 
 ---
@@ -132,7 +134,7 @@ for tool_call in assistant_message.tool_calls:
 *Once the loop exits because there are no more tool calls, how do you extract the text content from the response object? What field holds the string you should return?*
 
 ```
-[your answer here]
+response.choices[0].message.content holds the final text string. Access it after the loop exits when there are no more tool calls.
 ```
 
 ---
@@ -145,19 +147,19 @@ for tool_call in assistant_message.tool_calls:
 
 ```
 Query: "How should I care for my calathea?"
-Round 1 tool call: [tool name, args]
-Round 2 tool call: [tool name, args] (if any)
-Final response: [brief description]
+Round 1 tool call: lookup_plant({'plant_name': 'calathea'})
+Round 2 tool call: get_seasonal_conditions({})
+Final response: specific care advice for calathea with seasonal context
 ```
 
 **What happens when you ask about a plant that isn't in the database?**
 
 ```
-[describe the behavior you observed]
+Agent tries the common name, then attempts the scientific name. When both fail, it acknowledges the plant isn't in the database and offers general guidance
 ```
 
 **One thing about the tool call API that surprised you:**
 
 ```
-[your answer here]
+The LLM automatically tried the scientific name after the common name failed, without any explicit instruction to do so it inferred this from the not-found message.
 ```
