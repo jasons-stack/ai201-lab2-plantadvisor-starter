@@ -52,11 +52,31 @@ def lookup_plant(plant_name: str) -> dict:
 
     Before writing code, complete the lookup_plant section of specs/tool-functions-spec.md.
     """
+    normalized = plant_name.strip().lower()
+    # 1. Direct key match
+    if normalized in _plant_db:
+        return {"found": True, "plant": _plant_db[normalized]}
+
+    # 2. Display name match
+    for key, plant in _plant_db.items():
+        if plant["display_name"].lower() == normalized:
+            return {"found": True, "plant": plant}
+
+    # 3. Alias match
+    for key, plant in _plant_db.items():
+        for alias in plant["aliases"]:
+            if alias.lower() == normalized:
+                return {"found": True, "plant": plant}
+
+    # Not found
     return {
         "found": False,
         "name": plant_name,
-        "message": "Plant lookup not yet implemented. Complete Milestone 1.",
-    }
+        "message": f"No plant matching '{normalized}' was found in the database. "
+            f"The user may have used an uncommon name or misspelling. "
+            f"Let them know you don't have information on this plant and "
+            f"suggest they try a common name or ask about a different plant."
+        }
 
 
 def get_seasonal_conditions(season: str | None = None) -> dict:

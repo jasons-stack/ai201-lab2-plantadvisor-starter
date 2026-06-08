@@ -70,7 +70,12 @@ likely match for clean user input. Aliases are the broadest net, so they go last
 *Aliases are stored as a list of strings. How will you check if the normalized input matches any alias in the list? Write your approach in pseudocode or plain English.*
 
 ```
-[your answer here]
+For each plant in the database, convert each alias to lowercase and check 
+if the normalized input matches any of them:
+
+for alias in plant["aliases"]:
+    if normalized == alias.lower():
+        return the plant
 ```
 
 ---
@@ -80,7 +85,7 @@ likely match for clean user input. Aliases are the broadest net, so they go last
 *When a plant isn't found, the agent will read your message and use it to decide what to tell the user. Write the exact string you'll return — make it useful to the agent, not just to a human reading logs.*
 
 ```
-[your answer here]
+"No plant matching '{normalized}' was found in the database. The user may have used an uncommon name or misspelling. Let them know you don't have information on this plant and suggest they try a common name or ask about a different plant."
 ```
 
 ---
@@ -92,16 +97,18 @@ likely match for clean user input. Aliases are the broadest net, so they go last
 **Test: does `"devil's ivy"` return the pothos entry?**
 ```
 [yes / no — if no, describe what happened]
+Yes
 ```
 
 **Test: does `"SNAKE PLANT"` return the snake plant entry?**
 ```
 [yes / no — if no, describe what happened]
+Yes
 ```
 
 **One edge case you discovered while implementing:**
 ```
-[your answer here]
+Aliases with apostrophes like "devil's ivy" still match correctly because we do exact string comparison after lowercasing, not regex or partial matching
 ```
 
 ---
@@ -183,12 +190,13 @@ The full season dict from `_season_data`, plus a `detected_season` boolean. Exam
 
 **Test: does calling with `season=None` return the correct season for the current month?**
 ```
-Current month: [month]
-Expected season: [season]
-Returned season: [season]
+Current month: June
+Expected season: Summer
+Returned season: Summer
 ```
 
 **Test: does calling with `season="winter"` return winter data regardless of the current month?**
 ```
 [yes / no]
+Yes
 ```
