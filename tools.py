@@ -73,10 +73,11 @@ def lookup_plant(plant_name: str) -> dict:
         "found": False,
         "name": plant_name,
         "message": f"No plant matching '{normalized}' was found in the database. "
-            f"The user may have used an uncommon name or misspelling. "
-            f"Let them know you don't have information on this plant and "
-            f"suggest they try a common name or ask about a different plant."
-        }
+               f"Do not invent specific care data. Instead, acknowledge the gap, "
+               f"offer practical general advice based on any description the user provided "
+               f"(e.g., succulent, tropical, fern), and suggest a reliable resource "
+               f"like the American Horticultural Society for specific care data."
+}
 
 
 def get_seasonal_conditions(season: str | None = None) -> dict:
